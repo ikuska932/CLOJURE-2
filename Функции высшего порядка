@@ -1,0 +1,19 @@
+(ns example
+  (:require [clojure.string :as str]))
+
+ 1
+(defn product [nums]
+  (reduce * nums))
+
+ 2
+(defn uppercase-strings [strings]
+  (map str/upper-case strings))
+
+3
+(def subtract-5 (partial - 5))
+
+ 
+(println "Произведение чисел:" (product [2 3 4])) ;; => 24
+(println "Заглавные строки:" (uppercase-strings ["hello" "world"])) ;; => ("HELLO" "WORLD")
+(println "10 - 5 =" (subtract-5 10)) ;; => -5
+(println "20 - 5 =" (subtract-5 20)) ;; => -15
