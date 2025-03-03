@@ -1,0 +1,74 @@
+(ns example)
+
+;; 1.  "Машина"
+(defn create-car []
+  (atom {:speed 0}))
+
+(defn accelerate [car amount]
+  (swap! car update :speed + amount)
+  (println "Ускорение, скорость:" (:speed @car)))
+
+(defn brake [car amount]
+  (swap! car update :speed #(max 0 (- % amount)))
+  (println "Торможение, скорость:" (:speed @car)))
+
+(defn get-speed [car]
+  (:speed @car))
+
+
+(def my-car (create-car))
+(accelerate my-car 50)
+(brake my-car 20)
+(println "Текущая скорость:" (get-speed my-car))
+
+;; 2.  "Библиотека"
+(defn create-library []
+  (atom #{})) 
+
+(defn add-book [library title]
+  (swap! library conj title)
+  (println "Добавлена книга:" title))
+
+(defn remove-book [library title]
+  (swap! library disj title)
+  (println "Удалена книга:" title))
+
+(defn find-book [library title]
+  (if (contains? @library title)
+    (str "Книга \"" title "\" найдена")
+    (str "Книга \"" title "\" не найдена")))
+
+
+(def my-library (create-library))
+(add-book my-library "1984")
+(add-book my-library "Гарри Поттер")
+(println (find-book my-library "1984"))
+(remove-book my-library "1984")
+(println (find-book my-library "1984"))
+
+;; 3.  "Банк"
+(defn create-bank []
+  (atom {})) 
+
+(defn create-account [bank name balance]
+  (swap! bank assoc name balance)
+  (println "Создан счёт:" name ", баланс:" balance "₽"))
+
+(defn transfer [bank from to amount]
+  (if (and (contains? @bank from) (contains? @bank to) (>= (@bank from) amount))
+    (do
+      (swap! bank update from - amount)
+      (swap! bank update to + amount)
+      (println "Перевод" amount "₽ с" from "на" to))
+    (println "Ошибка перевода: недостаточно средств или неверные счета")))
+
+(defn get-balance [bank name]
+  (str name ": " (@bank name) "₽"))
+
+
+(def my-bank (create-bank))
+(create-account my-bank "Алексей" 5000)
+(create-account my-bank "Мария" 3000)
+(transfer my-bank "Алексей" "Мария" 2000)
+(println (get-balance my-bank "Алексей"))
+(println (get-balance my-bank "Мария"))
