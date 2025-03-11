@@ -1,0 +1,28 @@
+(ns currying-example)
+
+;;1. 
+(defn curried-multiply-four [a]
+  (fn [b]
+    (fn [c]
+      (fn [d]
+        (* a b c d)))))
+
+;; Example usage
+(println "Product of 2, 3, 4, 5:" 
+         ((((curried-multiply-four 2) 3) 4) 5)) 
+
+;; 2. 
+(defn add-suffix [suffix]
+  (fn [s]
+    (str s suffix)))
+
+(def add-exclamation (add-suffix "!"))
+(println (add-exclamation "Hello")) ;; Output: "Hello!"
+
+;; 3. 
+(defn subtract [a]
+  (fn [b]
+    (- a b)))
+
+(def subtract-from-10 (subtract 10))
+(println "10 - 3 =" (subtract-from-10 3)) ;; Output: 7
