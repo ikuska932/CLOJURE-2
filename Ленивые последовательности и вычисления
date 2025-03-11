@@ -1,0 +1,19 @@
+(ns lazy-sequences)
+
+;; 1. 
+(defn cube-seq []
+  (map #(long (Math/pow % 3)) (iterate inc 1))) 
+
+(println "First 10 cubes:" (take 10 (cube-seq)))
+
+;; 2.
+(defn multiples-seq []
+  (filter #(or (zero? (mod % 3)) (zero? (mod % 5))) (iterate inc 1)))
+
+(println "First 10 multiples of 3 or 5:" (take 10 (multiples-seq)))
+
+;; 3.
+(defn fib-seq [a b]
+  (lazy-seq (cons a (fib-seq b (+ a b)))))
+
+(println "First 10 Fibonacci numbers:" (take 10 (fib-seq 0 1)))
