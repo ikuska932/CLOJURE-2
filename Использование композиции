@@ -1,0 +1,26 @@
+(ns function-composition
+  (:require [clojure.string :as str]))
+
+;; 1.
+(def upper-first-3 (comp (partial apply str) (partial take 3) str/upper-case))
+
+
+(println (upper-first-3 "hello")) 
+
+;; 2.
+(def process-numbers 
+  (comp (partial reduce +) 
+        (partial map #(* 2 %)) 
+        (partial filter pos?)))
+
+;; Example usage
+(println (process-numbers [-3 2 -5 8 -1 4]))  
+
+;; 3. 
+(def count-long-words 
+  (comp count 
+        (partial filter #(> (count %) 3)) 
+        #(str/split % #"\s+"))) ;; FIX: Using #"\s+" regex instead of string
+
+;; 
+(println (count-long-words "The quick brown fox jumps over the lazy dog")) 
