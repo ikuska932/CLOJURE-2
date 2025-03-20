@@ -1,0 +1,32 @@
+(ns pure-vs-impure
+  (:require [clojure.string :as str]))
+
+;; 1
+(defn string-length [s]
+  (count s))
+
+
+(println (string-length "Hello, world!")) 
+
+;; 2
+(def counter (atom 0))
+
+(defn impure-increment []
+  (swap! counter inc)) 
+
+
+(defn pure-increment [count-value]
+  (+ count-value 1)) ;
+
+
+(println (pure-increment 5)) 
+
+;; 3
+(defn process-numbers [nums]
+  (->> nums
+       (filter pos?)  
+       (map #(* % 2)) 
+       (reduce +)))   
+
+;; Example usage
+(println (process-numbers [-3 2 -5 8 -1 4])) 
